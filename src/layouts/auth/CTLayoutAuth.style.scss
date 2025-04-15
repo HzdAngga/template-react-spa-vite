@@ -1,0 +1,48 @@
+@use '@/styles/scss/utils/borderRadius';
+@use '@/styles/scss/utils/boxShadow';
+@use '@/styles/scss/utils/margin';
+@use '@/styles/scss/utils/padding';
+@use '@/styles/scss/variables/colors' as kColor;
+
+.ct_layout_auth {
+  &__main {
+    background-color: kColor.$kColorBackground--dashboard;
+    min-height: 100dvh;
+    display: flex;
+    @extend .p--4;
+  }
+
+  &__card {
+    background-color: #ffffff;
+    margin: auto;
+    max-width: 512px;
+    width: 100%;
+    display: flex;
+    justify-content: stretch;
+    align-items: center;
+    flex-direction: column;
+    @extend .p--6;
+    @extend .radius;
+    @extend .shadow;
+  }
+
+  &__logo {
+    max-width: 180px;
+    margin-bottom: 1rem;
+  }
+
+  &__title {
+    text-align: center;
+  }
+
+  &__subtitle {
+    @extend .mt--1;
+    text-align: center;
+  }
+
+  &__inner {
+    max-width: 300px;
+    width: 100%;
+    @extend .mt--3;
+  }
+}

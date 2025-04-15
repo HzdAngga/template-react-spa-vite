@@ -1,0 +1,37 @@
+@use '@/styles/scss/variables/colors' as kColor;
+
+$header_sidebar_color: kColor.$kColorBackground--dashboard;
+
+.ct_layout_dashboard__sidebar {
+  background-color: $header_sidebar_color;
+  border-right: thin solid kColor.$kColorNeutral--1;
+
+  &__trigger {
+    transition: background-color 0.2s ease;
+    border-top: thin solid kColor.$kColorNeutral--1;
+    border-right: thin solid kColor.$kColorNeutral--1;
+    &:hover {
+      background-color: kColor.$kColorPrimary--0;
+    }
+    &:active {
+      background-color: rgba(kColor.$kColorPrimary--main, 0.4);
+    }
+  }
+
+  &__menu {
+    user-select: none;
+    font-weight: 600;
+
+    &:where(.ant-menu-light),
+    &:where(.ant-menu-light) > .ant-menu {
+      background-color: $header_sidebar_color;
+      color: kColor.$kColorNeutral--main;
+    }
+    &:where(.ant-menu-light).ant-menu-inline .ant-menu-sub.ant-menu-inline,
+    &:where(.ant-menu-light)
+      > .ant-menu.ant-menu-inline
+      .ant-menu-sub.ant-menu-inline {
+      background-color: $header_sidebar_color;
+    }
+  }
+}

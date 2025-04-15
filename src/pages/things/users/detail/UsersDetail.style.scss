@@ -1,0 +1,17 @@
+@use '@/styles/scss/utils/margin';
+
+.ct_users_detail {
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  &__label {
+    @extend .mb--1;
+  }
+
+  &__value:not(:last-child) {
+    @extend .mb--2;
+  }
+}
