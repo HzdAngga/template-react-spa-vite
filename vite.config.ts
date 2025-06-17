@@ -6,7 +6,7 @@ import { compression } from 'vite-plugin-compression2';
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
 
 // https://vitejs.dev/config/
-export default ({ mode }: { mode: string }) => {
+export default () => {
   return defineConfig({
     css: {
       preprocessorOptions: {
