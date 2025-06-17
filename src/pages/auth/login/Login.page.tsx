@@ -1,8 +1,10 @@
+import { useEffect } from 'react';
+
 import { Button, Form, Input, message } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { CTForm } from '@/components';
-import kodaService from '@/configs/common/service.config';
+import customService from '@/configs/common/service.config';
 import {
   RouteEndpointsAuth,
   RouteEndpointsCommon,
@@ -28,18 +30,23 @@ const LoginPage: React.FC = () => {
     (state) => state.updateIsAuthenticated
   );
 
-  const { mutate, isLoading } = useLogin({
-    onSuccess: (data) => {
-      kodaService.setCredential({
+  const { mutate, data, isPending: isLoading, error, isSuccess } = useLogin();
+  useEffect(() => {
+    if (isSuccess) {
+      customService.setCredential({
         accessToken: data.access_token,
         refreshToken: data.refresh_token,
       });
       updateIsAuthenticated(true);
       navigate(RouteEndpointsCommon.HOME, { replace: true });
       message.open({ content: 'Login successful.', type: 'success' });
-    },
-    onError: (error) => {
-      if (error.statusCode === 401) {
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSuccess, data]);
+  useEffect(() => {
+    if (error) {
+      message.open({ content: error.message, type: 'error' });
+      if (error?.statusCode === 401) {
         form.setFields([
           { name: kLoginFormField.EMAIL, errors: [''] },
           {
@@ -49,9 +56,9 @@ const LoginPage: React.FC = () => {
         ]);
         return;
       }
-      message.open({ content: error.message, type: 'error' });
-    },
-  });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [error]);
 
   const handleSubmit = (value: TloginFormValue) => {
     mutate(value);

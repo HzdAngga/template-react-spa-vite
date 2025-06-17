@@ -1,4 +1,4 @@
-import kodaService from '@/configs/common/service.config';
+import customService from '@/configs/common/service.config';
 import { EndpointsThings } from '@/constants/endpoint';
 import {
   TCreateUserParams,
@@ -12,18 +12,18 @@ import {
 
 export default class UsersAPI {
   getAllUsers(): Promise<TGetAllUsersResponse[]> {
-    return kodaService.base.get(EndpointsThings.GET_ALL_USERS);
+    return customService.base.get(EndpointsThings.GET_ALL_USERS);
   }
   getSingleUser(params: TGetSingleUserParams): Promise<TGetSingleUserResponse> {
-    return kodaService.base.get(
-      EndpointsThings.GET_SINGLE_USER.replace(':id', params.id)
+    return customService.base.get(
+      EndpointsThings.GET_SINGLE_USER.replace(':id', params || '')
     );
   }
   createUser(params: TCreateUserParams): Promise<TCreateUserResponse> {
-    return kodaService.base.post(EndpointsThings.CREATE_USER, params.payload);
+    return customService.base.post(EndpointsThings.CREATE_USER, params.payload);
   }
   UpdateUser(params: TUpdateUserParams): Promise<TUpdateUserResponse> {
-    return kodaService.base.put(
+    return customService.base.put(
       EndpointsThings.UPDATE_USER.replace(':id', params.id),
       params.payload
     );

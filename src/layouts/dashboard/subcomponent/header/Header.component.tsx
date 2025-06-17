@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import {
   DownOutlined,
@@ -10,7 +10,7 @@ import cx from 'classnames';
 import { Link, useNavigate } from 'react-router-dom';
 
 import imgCompanyLogo from '@/assets/images/img__company_logo.svg';
-import kodaService from '@/configs/common/service.config';
+import customService from '@/configs/common/service.config';
 import {
   RouteEndpointsAuth,
   RouteEndpointsCommon,
@@ -35,19 +35,25 @@ const CTLayoutDashboardHeader: React.FC = () => {
 
   const [isProfileOpen, setIsProfileOpen] = useState<boolean>(false);
 
-  useGetUserInfo({
-    enabled: !userInfo,
-    onSuccess: (data) => {
+  const { data: getUserInfoData, isSuccess: successGetUserInfo } =
+    useGetUserInfo({
+      options: {
+        enabled: !userInfo,
+      },
+    });
+  useEffect(() => {
+    if (successGetUserInfo) {
       updateUserInfo({
-        avatar: data.avatar,
-        name: data.name,
-        role: data.role,
+        avatar: getUserInfoData.avatar,
+        name: getUserInfoData.name,
+        role: getUserInfoData.role,
       });
-    },
-  });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [getUserInfoData, successGetUserInfo]);
 
   const handleLogout = () => {
-    kodaService.removeCredential();
+    customService.removeCredential();
     updateIsAuthenticated(false);
     updateUserInfo(null);
     navigate(RouteEndpointsAuth.LOGIN, { replace: true });

@@ -7,7 +7,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import RouteEndpointsUsers from '@/constants/route-endpoint/things/users';
 import { useGetSingleUser } from '@/hooks/api/things';
 import { CTLayoutDashboard } from '@/layouts';
-import { TGetSingleUserParams } from '@/types/api/things';
 import { capitalize } from '@/utils/string.utils';
 
 import '@/styles/scss/utils/_margin.scss';
@@ -18,8 +17,8 @@ import { kUsersDetailPageMeta } from './UsersDetail.constant';
 const UsersDetailPage: React.FC = () => {
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
   const navigate = useNavigate();
-  const params = useParams() as TGetSingleUserParams;
-  const { data } = useGetSingleUser(params);
+  const params = useParams();
+  const { data } = useGetSingleUser({ params: params.id });
 
   const password = useMemo(() => {
     if (!data?.password) return '-';
@@ -40,7 +39,7 @@ const UsersDetailPage: React.FC = () => {
             navigate(
               RouteEndpointsUsers.BASE_USERS +
                 '/' +
-                RouteEndpointsUsers.EDIT_USER.replace(':id', params.id)
+                RouteEndpointsUsers.EDIT_USER.replace(':id', params.id || '')
             );
           },
         },

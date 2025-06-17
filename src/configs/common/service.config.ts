@@ -102,6 +102,6 @@ class CustomService {
   }
 }
 
-const kodaService = new CustomService();
+const customService = new CustomService();
 
-export default kodaService;
+export default customService;

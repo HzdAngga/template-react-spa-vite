@@ -1,6 +1,4 @@
-export type TGetSingleUserParams = {
-  id: string;
-};
+export type TGetSingleUserParams = string | undefined;
 
 export type TGetSingleUserResponse = {
   id: number;

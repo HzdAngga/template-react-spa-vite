@@ -1,16 +1,20 @@
-import { UseQueryOptions, useCTQuery } from '@/hooks/api/api.hooks';
+import { useQuery, UseQueryOptions } from '@tanstack/react-query';
+
 import { APIServices } from '@/services';
 import { TGetUserInfoResponse } from '@/types/api/auth';
 
-export const getUserInfoKey = 'GET_USER_INFO';
-export default function useGetUserInfo(
-  options?: UseQueryOptions<TGetUserInfoResponse>
-) {
-  const { data, ...query } = useCTQuery(
-    [getUserInfoKey],
-    () => APIServices.auth.getUserInfo(),
-    options
-  );
-
-  return { data, ...query };
+export const queryKey = ['GET_USER_INFO'];
+export default function useGetUserInfo({
+  options = {
+    queryKey,
+  },
+}: {
+  options?: Partial<UseQueryOptions<TGetUserInfoResponse>>;
+} = {}) {
+  const { queryKey: _queryKeyFrmOptions, ...restOptions } = options;
+  return useQuery({
+    queryKey,
+    queryFn: () => APIServices.auth.getUserInfo(),
+    ...restOptions,
+  });
 }

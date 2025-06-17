@@ -1,12 +1,18 @@
-import { UseMutationOptions, useCTMutation } from '@/hooks/api/api.hooks';
+import { useMutation, UseMutationOptions } from '@tanstack/react-query';
+
 import { APIServices } from '@/services';
 import { TCreateUserParams, TCreateUserResponse } from '@/types/api/things';
+import { TCommonAPIError } from '@/types/common';
 
-export default function useCreateUser(
-  options?: UseMutationOptions<TCreateUserResponse, TCreateUserParams>
-) {
-  return useCTMutation<TCreateUserResponse, TCreateUserParams>(
-    (params) => APIServices.users.createUser(params),
-    options
-  );
+export default function useCreateUser({
+  options = {},
+}: {
+  options?: Partial<
+    UseMutationOptions<TCreateUserResponse, TCommonAPIError, TCreateUserParams>
+  >;
+} = {}) {
+  return useMutation({
+    mutationFn: (params) => APIServices.users.createUser(params),
+    ...options,
+  });
 }

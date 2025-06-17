@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import { Button, Form, Input, Select } from 'antd';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
@@ -10,7 +10,6 @@ import {
   useUpdateUser,
 } from '@/hooks/api/things';
 import { CTLayoutDashboard } from '@/layouts';
-import { TGetSingleUserParams } from '@/types/api/things';
 
 import {
   kUsersFormField,
@@ -26,7 +25,7 @@ const UsersFormPage: React.FC = () => {
   // #region Helper Hooks
   const location = useLocation();
   const navigate = useNavigate();
-  const params = useParams() as TGetSingleUserParams;
+  const params = useParams() || {};
   const [form] = Form.useForm();
   // #endregion
 
@@ -43,27 +42,56 @@ const UsersFormPage: React.FC = () => {
   if (isEdit) kUsersFormPageMeta.titlePage = 'Edit User || Custom';
 
   // #region Mutator and Query
-  const { mutate: mutateCreateUser, isLoading: isCreating } = useCreateUser({
-    onSuccess: () => handleUsersFormSuccess(isEdit, navigate),
-    onError: (err) => handleUsersFormError(err),
-  });
-  const { mutate: mutateUpdateUser, isLoading: isUpdating } = useUpdateUser({
-    onSuccess: () => handleUsersFormSuccess(isEdit, navigate),
-    onError: (err) => handleUsersFormError(err),
-  });
-
-  useGetSingleUser(
-    { id: params.id },
-    {
-      enabled: Boolean(isEdit && params.id),
-      onSuccess: (data) => {
-        form.setFieldsValue({
-          ...data,
-          [kUsersFormField.CONFIRM_PASSWORD]: data.password,
-        });
-      },
+  const {
+    mutate: mutateCreateUser,
+    isPending: isCreating,
+    error: errorCreate,
+    isSuccess: successCreate,
+  } = useCreateUser();
+  useEffect(() => {
+    if (successCreate) {
+      handleUsersFormSuccess(isEdit, navigate);
     }
-  );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [successCreate]);
+  useEffect(() => {
+    if (errorCreate) {
+      handleUsersFormError(errorCreate);
+    }
+  }, [errorCreate]);
+  const {
+    mutate: mutateUpdateUser,
+    isPending: isUpdating,
+    error: errorUpdate,
+    isSuccess: successUpdate,
+  } = useUpdateUser();
+  useEffect(() => {
+    if (successUpdate) {
+      handleUsersFormSuccess(isEdit, navigate);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [successUpdate]);
+  useEffect(() => {
+    if (errorUpdate) {
+      handleUsersFormError(errorUpdate);
+    }
+  }, [errorUpdate]);
+
+  const { data: getSingleUserData, isSuccess } = useGetSingleUser({
+    params: params.id,
+    options: {
+      enabled: Boolean(isEdit && params.id),
+    },
+  });
+  useEffect(() => {
+    if (isSuccess) {
+      form.setFieldsValue({
+        ...getSingleUserData,
+        [kUsersFormField.CONFIRM_PASSWORD]: getSingleUserData.password,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSuccess, getSingleUserData]);
 
   // #endregion
 
@@ -82,7 +110,7 @@ const UsersFormPage: React.FC = () => {
     }
 
     if (isEdit) {
-      mutateUpdateUser({ id: params.id, payload });
+      mutateUpdateUser({ id: params.id || '', payload });
       return;
     }
 

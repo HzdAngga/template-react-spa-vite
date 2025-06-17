@@ -1,20 +1,27 @@
-import { UseQueryOptions, useCTQuery } from '@/hooks/api/api.hooks';
+import { useMemo } from 'react';
+
+import { useQuery, UseQueryOptions } from '@tanstack/react-query';
+
 import { APIServices } from '@/services';
 import {
   TGetSingleUserParams,
   TGetSingleUserResponse,
 } from '@/types/api/things';
 
-export const getSingleUserKey = 'GET_ALL_USERS';
-export default function useGetSingleUser(
-  params: TGetSingleUserParams,
-  options?: UseQueryOptions<TGetSingleUserResponse, TGetSingleUserParams>
-) {
-  const { data, ...query } = useCTQuery(
-    [getSingleUserKey, params],
-    () => APIServices.users.getSingleUser(params),
-    options
-  );
+export default function useGetSingleUser({
+  params,
+  options = {},
+}: {
+  params?: TGetSingleUserParams;
+  options?: Partial<UseQueryOptions<TGetSingleUserResponse>>;
+} = {}) {
+  const queryKey = useMemo(() => ['GET_SINGLE_USER', params], [params]);
 
-  return { data, ...query };
+  const { queryKey: _queryKeyFrmOptions, ...restOptions } = options;
+
+  return useQuery({
+    queryKey,
+    queryFn: () => APIServices.users.getSingleUser(params),
+    ...restOptions,
+  });
 }

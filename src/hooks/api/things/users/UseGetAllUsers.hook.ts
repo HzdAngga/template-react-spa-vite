@@ -1,16 +1,21 @@
-import { UseQueryOptions, useCTQuery } from '@/hooks/api/api.hooks';
+import { useQuery, UseQueryOptions } from '@tanstack/react-query';
+
 import { APIServices } from '@/services';
 import { TGetAllUsersResponse } from '@/types/api/things';
 
-export const getAllUsersKey = 'GET_ALL_USERS';
-export default function useGetAllUsers(
-  options?: UseQueryOptions<TGetAllUsersResponse[]>
-) {
-  const { data, ...query } = useCTQuery(
-    [getAllUsersKey],
-    () => APIServices.users.getAllUsers(),
-    options
-  );
+export const queryKey = ['GET_ALL_USERS'];
+export default function useGetAllUsers({
+  options = {
+    queryKey,
+  },
+}: {
+  options?: Partial<UseQueryOptions<TGetAllUsersResponse[]>>;
+} = {}) {
+  const { queryKey: _queryKeyFrmOptions, ...restOptions } = options;
 
-  return { data, ...query };
+  return useQuery({
+    queryKey,
+    queryFn: () => APIServices.users.getAllUsers(),
+    ...restOptions,
+  });
 }

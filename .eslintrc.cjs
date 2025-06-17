@@ -26,7 +26,14 @@ module.exports = {
   rules: {
     quotes: ['error', 'single', { avoidEscape: true }],
     semi: ['error', 'always'],
-    '@typescript-eslint/no-unused-vars': 'warn',
+    '@typescript-eslint/no-unused-vars': [
+      'warn',
+      {
+        argsIgnorePattern: '^_', // Ignore unused arguments that start with an underscore
+        varsIgnorePattern: '^_', // Ignore unused variables that start with an underscore
+        caughtErrorsIgnorePattern: '^_', // Ignore unused catch arguments that start with an underscore
+      },
+    ],
     '@typescript-eslint/no-duplicate-enum-values': 'off',
     'no-console': 'error',
     'react/react-in-jsx-scope': 'off',
