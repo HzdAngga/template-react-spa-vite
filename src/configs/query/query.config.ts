@@ -32,7 +32,6 @@ export const queryClient = (queryClientConfig?: QueryClientConfig) => {
           customService.removeCredential();
 
           window.location.href = RouteEndpointsAuth.LOGIN;
-          // navigate(RouteEndpointsAuth.LOGIN, { replace: true });
         }
       },
     }),
