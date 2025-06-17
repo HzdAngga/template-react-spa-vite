@@ -1,4 +1,5 @@
-@use '@/styles/scss/variables/colors' as color;
+@use 'sass:color';
+@use '@/styles/scss/variables/colors' as ctColor;
 @use '@/styles/scss/variables/breakPoints' as bp;
 
 .ct_homepage {
@@ -18,7 +19,10 @@
 .card {
   width: auto;
   min-height: 120px;
-  background-color: grayscale(darken(color.$kColorBackground--dashboard, 8));
+  background-color: color.adjust(
+    $color: ctColor.$kColorBackground--dashboard,
+    $blackness: 8%
+  );
   border-radius: 8px;
 
   &.big {

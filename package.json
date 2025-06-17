@@ -1,5 +1,5 @@
 {
-  "name": "react-spa-ts",
+  "name": "template-react-spa-vite",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -32,7 +32,6 @@
     "@commitlint/cli": "^17.8.1",
     "@commitlint/config-conventional": "^17.8.1",
     "@commitlint/cz-commitlint": "^17.8.1",
-    "@mojojoejo/vite-plugin-purgecss": "^1.1.0",
     "@types/react": "^18.3.20",
     "@types/react-dom": "^18.3.6",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
@@ -47,15 +46,14 @@
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-react-refresh": "^0.4.19",
     "husky": "^8.0.3",
-    "sass": "^1.86.3",
+    "sass-embedded": "^1.89.2",
     "sharp": "^0.32.6",
     "svgo": "^3.3.2",
     "terser": "^5.39.0",
     "typescript": "^5.8.3",
-    "vite": "^4.5.13",
+    "vite": "^6.3.5",
     "vite-plugin-compression2": "^0.10.6",
     "vite-plugin-image-optimizer": "^1.1.8",
-    "vite-plugin-svgr": "^3.3.0",
     "vitest": "^0.34.6"
   },
   "engines": {
