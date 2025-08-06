@@ -1,0 +1,10 @@
+@use '@/styles/scss/variables/colors' as kColor;
+
+.error_404_page {
+  min-height: 100dvh;
+  display: flex;
+  background-color: kColor.$kColorBackground--dashboard;
+  &__illust {
+    margin: auto;
+  }
+}
